@@ -1,0 +1,122 @@
+﻿@using AttendanceCRM.Models
+@model AttendanceViewModel
+@{
+    ViewData["Title"] = "Attendance";
+}
+
+<div class="container-fluid">
+    <div class="title row align-items-center justify-content-between">
+        <div class="col-auto col-sm text-truncate pr-0">
+            <h1 class="text-truncate">Attendance</h1>
+        </div>
+        <div class="col-auto display-flex">
+            <form id="SearchCriteria" action="javascript:void(0)" default-button="btnSearch">
+                <div class="one-col default-form clearfix mt-2">
+                    <div class="form-group">
+                        <div class="input-group">
+                            @Html.TextBox("Search", "", new { @class = "form-control", placeholder = "Search by Name/Detail", maxlength = "100", autocomplete = "off" })
+                            <div class="input-group-append">
+                                <button id="btnSearch" type="button" class="input-group-text btn btn-primary" onclick="BindTable()"><img src="@Url.Content("~/Images/icon-search.svg")" alt=""></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card-outer p-0">
+        <div id="divAttendance" class="grid-block">
+            <table id="tblAttendance" class="table"></table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        BindTable();
+        $('#SearchCriteria').on('keypress', function (e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+                BindTable();
+            }
+        });
+    });
+
+    function BindTable() {
+
+        if ($.fn.DataTable.isDataTable("#tblAttendance")) {
+            $('#tblAttendance').dataTable().fnDestroy();
+            $('#divAttendance').html('<table id="tblAttendance" class="table"></table>');
+        }
+
+        $('#tblAttendance').DataTable({
+            "lengthChange": true,
+            "pageLength": 10,
+            "processing": true,
+            "serverSide": false,
+            "orderMulti": false,
+            "paging": true,
+            'searching': false,
+            'ordering': true,
+            'autoWidth': false,
+            'dom': '<"table-responsive"t><"grid-footer clearfix"<"left-part"<"page-length"l>i>p>',
+            "language": {
+                "lengthMenu": "_MENU_",
+                "emptyTable": "No data available",
+                paginate: {
+                    next: '<img src="@Url.Content("~/Images/icon-next.svg")" alt="">', // or '→'
+                    previous: '<img src="@Url.Content("~/Images/icon-prev.svg")" alt="">' // or '←'
+                },
+                "info": "Records per page from <span class=\"badge badge-pill badge-dark\"> _TOTAL_ </span>",
+            },
+            "ajax": {
+                url: '@Url.Action("attendance", "attendance")',
+                type: "POST",
+                data: bindSearch()
+            },
+            "columns": [
+                { "title": "Name", "data": "Name", width: "20%" },
+                { "title": "Year", "data": "CourseYear.Name", width: "10%" },
+                { "title": "Semester", "data": "CourseSemester.Name", width: "20%" },
+                { "title": "Subject", "data": "CourseSubject.Name", width: "30%" },
+                {
+                    "title": "Active",
+                    "data": "Active",
+                    "width": "10%",
+                    "class": "text-center",
+                    "render": function (data, type, row) {
+                        var appendstring = '';
+                        if (data === true)
+                            appendstring += '<i title="Active" class="glyphicon glyphicon-ok-circle active"></i>'
+                        else
+                            appendstring += '<i title="InActive" class="glyphicon glyphicon-remove-circle inactive"></i>'
+                        return appendstring;
+                    }
+                },
+                {
+                    "title": "Action",
+                    "data": null,
+                    "class": "text-center",
+                    "render": function (data, type, row) {
+                        var appendstring = '';
+                        appendstring += '<a href="@Url.Action("manageattendance", "attendance")?data=' + row["EncryptedId"] + '"  class="action-btn"  title="Edit"><img src="@Url.Content("~/Images/icon-edit.svg")" alt=""></a>'
+                        return appendstring;
+                    },
+                    "orderable": false,
+                    "width": "10%"
+                }
+
+            ],
+            "drawCallback": function (settings, json) {
+                InitDeleteConfirmation();
+                PrepareGridBottom("divAttendance");
+            },
+            "lengthMenu": [[10, 20, 50, 100], [10, 20, 50, 100]]
+        });
+    }
+
+    function bindSearch() {
+        var param = {};
+        param["searchText"] = $('#Search').val();
+        return param;
+    }
+</script>

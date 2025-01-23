@@ -1,0 +1,179 @@
+﻿@using AttendanceCRM.Models
+@model UserViewModel
+@{
+    ViewData["Title"] = "Students";
+}
+
+<div class="container-fluid">
+    <div class="title row align-items-center justify-content-between">
+        <div class="col-auto col-sm text-truncate pr-0">
+            <h1 class="text-truncate">Students</h1>
+        </div>
+        <div class="col-auto display-flex">
+            <form id="SearchCriteria" action="javascript:void(0)" default-button="btnSearch">
+                <div class="one-col default-form clearfix mt-2">
+                    <div class="form-group">
+                        <div class="input-group">
+                            @Html.TextBox("Search", "", new { @class = "form-control", placeholder = "Search by Name/Email", maxlength = "100", autocomplete = "off" })
+                            <div class="input-group-append">
+                                <button id="btnSearch" type="button" class="input-group-text btn btn-primary" onclick="BindTable()"><img src="@Url.Content("~/Images/icon-search.svg")" alt=""></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="btn-list ml-10">
+                <a href="@Url.Action("managestudent", "student")" type="button" class="btn btn-icon btn-primary mt-2 ml-2">
+                    <img class="icon" src="~/images/add.svg" alt="">
+                    <span>Create Student</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-outer p-0">
+        <div id="divStudents" class="grid-block">
+            <table id="tblStudents" class="table"></table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        BindTable();
+        $('#SearchCriteria').on('keypress', function (e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+                BindTable();
+            }
+        });
+    });
+
+    function BindTable() {
+
+        if ($.fn.DataTable.isDataTable("#tblStudents")) {
+            $('#tblStudents').dataTable().fnDestroy();
+            $('#divStudents').html('<table id="tblStudents" class="table"></table>');
+        }
+
+        $('#tblStudents').DataTable({
+            "lengthChange": true,
+            "pageLength": 10,
+            "processing": true,
+            "serverSide": false,
+            "orderMulti": false,
+            "paging": true,
+            'searching': false,
+            'ordering': true,
+            'autoWidth': false,
+            'dom': '<"table-responsive"t><"grid-footer clearfix"<"left-part"<"page-length"l>i>p>',
+            "language": {
+                "lengthMenu": "_MENU_",
+                "emptyTable": "No data available",
+                paginate: {
+                    next: '<img src="@Url.Content("~/Images/icon-next.svg")" alt="">', // or '→'
+                    previous: '<img src="@Url.Content("~/Images/icon-prev.svg")" alt="">' // or '←'
+                },
+                "info": "Records per page from <span class=\"badge badge-pill badge-dark\"> _TOTAL_ </span>",
+            },
+            "ajax": {
+                url: '@Url.Action("student", "student")',
+                type: "POST",
+                data: bindSearch()
+            },
+            "columns": [
+                { "title": "Student ID", "data": "UserId", width: "10%" },
+                { "title": "First Name", "data": "FirstName", width: "15%" },
+                { "title": "Last Name", "data": "LastName", width: "15%" },
+                { "title": "Email", "data": "Email", width: "20%" },
+                {
+                    "title": "Gender",
+                    "data": null,
+                    "render": function (data, type, row) {
+                        var appendstring = '';
+                        if (row["GenderId"] == 1) {
+                            appendstring += "Male"
+                        }
+                        else if (row["GenderId"] == 2) {
+                            appendstring += "Female"
+                        }
+                        else if (row["GenderId"] == 3) {
+                            appendstring += "Other"
+                        }
+
+                        return appendstring;
+                    },
+                    "orderable": false,
+                    "width": "10%"
+                },
+                {
+                    "title": "Active",
+                    "data": "Active",
+                    "width": "10%",
+                    "class": "text-center",
+                    "render": function (data, type, row) {
+                        var appendstring = '';
+                        if (data === true)
+                            appendstring += '<i title="Active" class="glyphicon glyphicon-ok-circle active"></i>'
+                        else
+                            appendstring += '<i title="InActive" class="glyphicon glyphicon-remove-circle inactive"></i>'
+                        return appendstring;
+                    }
+                },
+                {
+                    "title": "Action",
+                    "data": null,
+                    "class": "text-center",
+                    "render": function (data, type, row) {
+                        var appendstring = '';
+                        appendstring += '<a href="@Url.Action("managestudent", "student")?data=' + row["EncryptedId"] + '"  class="action-btn"  title="Edit"><img src="@Url.Content("~/Images/icon-edit.svg")" alt=""></a>'
+                        appendstring += '<a href="javascript:void(0)" class="action-btn delete" data-id="' + row["EncryptedId"] + '" data-title="@Html.Raw("Delete Student")" data-message="@Html.Raw("Are you sure you want to delete this student?")" title="Delete"><img src="@Url.Content("~/Images/icon-delete.svg")" alt=""></a>'
+                        return appendstring;
+                    },
+                    "orderable": false,
+                    "width": "10%"
+                }
+
+            ],
+            "drawCallback": function (settings, json) {
+                InitDeleteConfirmation();
+                PrepareGridBottom("divStudents");
+            },
+            "lengthMenu": [[10, 20, 50, 100], [10, 20, 50, 100]]
+        });
+    }
+
+    function bindSearch() {
+        var param = {};
+        param["searchText"] = $('#Search').val();
+        return param;
+    }
+
+    function DeleteCallback(event) {
+        if (event !== undefined) {
+            if (event.target !== undefined) {
+                var atag = event.target;
+                if (event.target.tagName === "IMG") {
+                    atag = $(event.target).parent();
+                }
+                $.ajax({
+                    type: "POST",
+                    url: encodeURI('@Url.Action("deletestudent", "student")'),
+                    data: { "id": $(atag).attr('data-id') },
+                    cache: false,
+                    dataType: 'json',
+                    success: function (data, textStatus, XMLHttpRequest) {
+                        if (data.success) {
+                            BindTable();
+                            successMessage(data.message);
+                        }
+                        else {
+                            errorMessage(data.message);
+                        }
+                    },
+                    error: function (jqXHR, exception, errMsg) {
+                        errorMessage("Something went wrong.");
+                    }
+                });
+            }
+        }
+    }
+</script>

@@ -1,0 +1,51 @@
+[
+  {
+    "outputFileName": "wwwroot/css/main-bundle.min.css",
+    "inputFiles": [
+      "wwwroot/css/bootstrap.min.css",
+      "wwwroot/css/jquery-confirm.css",
+      "wwwroot/css/icheck-red.css",
+      "wwwroot/css/bootstrap-select.min.css",
+      "wwwroot/css/dataTables.bootstrap.css",
+      "wwwroot/css/datepicker.css",
+      "wwwroot/css/dev-style.css",
+      "wwwroot/css/retronotify.css",
+      "wwwroot/css/select2.min.css",
+      "wwwroot/css/select2-bootstrap4.css",
+      "wwwroot/css/font-awesome.min.css",
+      "wwwroot/css/site.css",
+      "wwwroot/css/style.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/js/main-bundle.min.js",
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.js",
+      "wwwroot/js/popper.min.js",
+      "wwwroot/js/bootstrap.min.js",
+      "wwwroot/js/bootstrap.bundle.min.js",
+      "wwwroot/js/bootstrap-datepicker.js",
+      "wwwroot/js/bootstrap-select.min.js",
+      "wwwroot/js/jquery-confirm.js",
+      "wwwroot/js/icheck.js",
+      "wwwroot/js/custom.js",
+      "wwwroot/js/jquery.nicescroll.min.js",
+      "wwwroot/js/select2.min.js",
+      "wwwroot/js/datatables.js",
+      "wwwroot/js/retronotify.js",
+      "wwwroot/js/site.js",
+      "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

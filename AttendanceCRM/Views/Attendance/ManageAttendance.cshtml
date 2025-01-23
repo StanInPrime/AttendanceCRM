@@ -1,0 +1,55 @@
+﻿@using AttendanceCRM.Models
+@model AttendanceViewModel
+@{
+    ViewData["Title"] = "Fill Attendance";
+}
+<!-- Start Content Header -->
+<div class="container-fluid">
+    <div class="title row align-items-center justify-content-between">
+        <div class="col-auto col-sm text-truncate pr-0 col-xl-6 col-lg-6 plr-0 badge-tag dis-flex">
+            <h1 class="text-truncate">Fill Attendance</h1>
+            <span class="badge badge-info">Course: @Model.CourseName</span>
+        </div>
+        <form class="col-xl-6 col-lg-6 plr-0">
+            <div class="filter-form two-col clearfix">
+                <div class="form-group" style="float:right;">
+                    @Html.DropDownList("MonthYear", Model.MonthYearList, new { @id = "ddlMonthYear", @class = "selectpicker", data_live_search = "true", data_live_search_placeholder = "Search Month", @onchange = "LoadFillAttenadance()" })
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- End Content Header -->
+<!-- Start Content Block -->
+<section class="content-block default-form">
+    @Html.HiddenFor(x => x.CourseId, new { @id = "hdnCourseId" })
+    <div class="grid-block">
+    </div>
+</section>
+<!-- End Content Block -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadFillAttenadance();
+    });
+    function LoadFillAttenadance() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("getattenadance", "attendance")",
+            data: { "courseId": $("#hdnCourseId").val(), "monthYear": $("#ddlMonthYear").val() },
+            cache: false,
+            dataType: 'html',
+            success: function (data, textStatus, XMLHttpRequest) {
+                if (data) {
+                    $(".grid-block").html("");
+                    $(".grid-block").html(data);
+                }
+                else {
+                    errorMessage(data.message);
+                }
+            },
+            error: function (jqXHR, exception, errMsg) {
+                errorMessage("Something went wrong.");
+            }
+        });
+    }
+</script>

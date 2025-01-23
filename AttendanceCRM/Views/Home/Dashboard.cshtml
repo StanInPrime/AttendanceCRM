@@ -1,0 +1,33 @@
+﻿@using AttendanceCRM.Models
+@model SearchViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="container-fluid">
+    <!-- title ===================== -->
+    <div class="title row align-items-center justify-content-between" style="height:40px;">
+        <div class="col-auto col-sm text-truncate pr-0">
+            <h1 class="text-truncate">Dashboard</h1>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="dashboard-overview row">
+        <a href="https://www.oldham.ac.uk/contact/" class="col-xl-3 col-sm-6" title="Contact Academic Support">
+            <img style="width:50%;" src="~/images/icon-greduation.svg" />
+            <h3>Contact Academic Support</h3>
+            <p>Contact or find out more about your institution's academic support</p>
+        </a>
+        <a href="https://www.oldham.ac.uk/student-support/" class="col-xl-3 col-sm-6" title="Personal Support">
+            <img style="width: 80%;" src="~/images/icon-spreadlove.svg" />
+            <h3>Personal Support</h3>
+            <p>Contact or find out more about your personal support options</p>
+        </a>
+        <a href="mailto:oderaghara@icloud.com" class="col-xl-3 col-sm-6" title="Tutor Support">
+            <img style="width: 67%;" src="~/images/icon-multitasking.png" />
+            <h3>Tutor Support</h3>
+            <p>Email your personal tutor</p>
+
+        </a>
+    </div>
+</div>

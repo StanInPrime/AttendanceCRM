@@ -1,0 +1,109 @@
+﻿@using AttendanceCRM.Models
+@model FillAttendanceViewModel
+@{
+    Layout = null;
+}
+
+<!-- Start Table -->
+<div class="table-responsive">
+    <table class="table work-plan-table text-center min-width-1600" data-col-fixed="1">
+        <thead>
+        <th class="fixed-col" width="140"></th>
+            @for (DateTime dateObj = Model.StartDate; dateObj <= Model.EndDate; dateObj = dateObj.AddDays(1))
+            {
+            <th width="40" data-value="@dateObj.Day" data-status="@dateObj" class="@(dateObj.Date == DateTime.Today ? "current-date-header" : "")">
+                <em class="@((dateObj.Date.DayOfWeek == DayOfWeek.Saturday || dateObj.Date.DayOfWeek == DayOfWeek.Sunday) ? "red-text" : "grey-text")">
+                        @dateObj.Date.DayOfWeek.ToString().Substring(0,1)
+                </em>
+                <span>
+                        @dateObj.Date.Day
+                </span>
+            </th>
+            }
+        </thead>
+        <tbody>
+            @foreach (var item in Model.StudentList)
+            {
+                <tr>
+                    <td class="text-left fixed-col">@(item.FirstName + " " + item.LastName)</td>
+                    @for (DateTime dateObj = Model.StartDate; dateObj <= Model.EndDate; dateObj = dateObj.AddDays(1))
+                    {
+                        var attendanceObj = Model.AttendanceList.Any(x => x.StudentId == item.Id && x.Date?.Date == dateObj.Date && x.CourseId == Model.CourseId)
+                        ? Model.AttendanceList.FirstOrDefault(x => x.StudentId == item.Id && x.Date?.Date == dateObj.Date && x.CourseId == Model.CourseId)
+                        : null;
+                        var isPresent = attendanceObj != null ? (attendanceObj.IsPresent ?? false) : false;
+                        var savedId = attendanceObj != null ? attendanceObj.Id : 0;
+                        if (dateObj.Date == DateTime.Today)
+                        {
+                            <td class="current-date day@(dateObj.Day)" data-studentid="@item.Id" data-savedid="@savedId">@Html.CheckBox("Day", isPresent , new { @class = "icheck" })</td>
+                        }
+                        else
+                        {
+                            <td class="day@(dateObj.Day)" >@Html.CheckBox("Day", isPresent, new { @class = "icheck", @disabled = "disabled"})</td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<!-- End Table -->
+@if(Model.IsActive ?? false)
+{
+    <div style="padding-top: 15px;">
+        <button type="button" class="btn btn-primary" onclick="SaveAttenadance()">Save</button>
+        <button type="button" class="btn btn-secondary" onclick="OnCancel()">Cancel</button>
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        InitiCheck();
+    });
+
+    function OnCancel() {
+        window.location.href = "@Url.Action("attendance", "attendance")";
+    }
+
+    function SaveAttenadance() {
+        var array = [];
+        $("th.current-date-header").each(function () {
+            var day = $(this).data("value");
+            var date = $(this).data("status");
+            var splitDate = date.split(" ")[0].split("-");
+            var dtAttendanceDate = new Date(parseInt(splitDate[2]), parseInt(splitDate[1] - 1), parseInt(splitDate[0]));
+            if (dtAttendanceDate.toDateString() == new Date().toDateString()) {
+                $(".current-date.day" + day).each(function () {
+                    if ($(this).data("studentid") != "") {
+                        array.push({
+                            AttendanceDate: [dtAttendanceDate.getFullYear(), ('0' + (dtAttendanceDate.getMonth() + 1)).slice(-2), ('0' + dtAttendanceDate.getDate()).slice(-2)].join('-'),
+                            Attendance: $(this).find(".icheck").is(":checked"),
+                            StudentId: $(this).data("studentid"),
+                            CourseId: $("#hdnCourseId").val(),
+                            Id: $(this).data("savedid")
+                        });
+                    }
+                });
+            }
+        })
+        debugger
+        if (array.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("saveattenadance", "attendance")",
+                data: { "data": JSON.stringify(array) },
+                cache: false,
+                success: function (data, textStatus, XMLHttpRequest) {
+                    if (data.success) {
+                        successMessage(data.message);
+                    }
+                    else {
+                        errorMessage(data.message);
+                    }
+                },
+                error: function (jqXHR, exception, errMsg) {
+                    errorMessage("Something went wrong.");
+                }
+            });
+        }
+    }
+</script>

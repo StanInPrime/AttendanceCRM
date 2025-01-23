@@ -1,0 +1,126 @@
+﻿@using AttendanceCRM.Models
+@model UserViewModel
+@{
+    ViewData["Title"] = "Students";
+}
+<div class="content-header badge-tag dis-flex">
+    <h1>Manage Student</h1>
+    @if(Model.User.Id > 0)
+    {
+        <span class="badge badge-info">User ID: @Model.User.UserId</span>
+    }
+</div>
+
+<section class="content-block">
+    @using (Html.BeginForm("managestudent", "student", FormMethod.Post, new { id = "frmStudent", @class = "default-form", autocomplete = "off" }))
+    {
+        @Html.HiddenFor(x => x.User.Id)
+        @Html.HiddenFor(x => x.User.CreatedDate)
+        @Html.HiddenFor(x => x.User.CreatedBy)
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.User.FirstName)
+                    @Html.TextBoxFor(m => m.User.FirstName, new { @class = "form-control requiredField", maxLength = "100", autocomplete = "off" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.User.LastName)
+                    @Html.TextBoxFor(m => m.User.LastName, new { @class = "form-control requiredField", maxLength = "100", autocomplete = "off" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.User.Email)
+                    @Html.TextBoxFor(m => m.User.Email, new { @class = "form-control requiredField", maxLength = "100", autocomplete = "off" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.User.GenderId)
+                    @Html.DropDownListFor(m => m.User.GenderId, Model.GenderList, new { @class = "selectpicker form-control requiredField", data_live_search = "true", data_live_search_placeholder = "Search", @id = "ddlGender" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.User.Password)
+                    @Html.TextBoxFor(x => x.User.Password, new { @class = "form-control requiredField", id = "password", type = "password", maxLength = "20", autocomplete = "off", minLength = 8 })
+                    @Html.ValidationMessageFor(x => x.User.Password, "", new { @class = "form-validation" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.User.ConfirmPassword)
+                    @Html.TextBoxFor(x => x.User.ConfirmPassword, new { @class = "form-control requiredField", id = "confirmpassword", type = "password", maxLength = "20", autocomplete = "off" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    <label class="icheck-label">
+                        @Html.CheckBox("User.Active", Model.User.Active.HasValue ? Model.User.Active.Value : false, new { @class = "icheck" })
+                        <span for="Active">@Html.Raw("Active")</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(x => x.User.Password, new { id = "hdnpassword" })
+        <button type="button" class="btn btn-primary" onclick="SaveFormData()">Save</button>
+        <button type="button" class="btn btn-secondary" onclick="OnCancel()">Cancel</button>
+    }
+</section>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            InitiCheck();
+            $('#frmStudent').on('keypress', function (e) {
+                if (e.keyCode === 13) {
+                    e.preventDefault();
+                    return SavePageData(this, 'frmStudent', OnSaveSuccess);
+                }
+            });
+        });
+
+        function SaveFormData() {
+            if (ValidateFormData()) {
+                return SavePageData(this, 'frmStudent', OnSaveSuccess);
+            }
+        }
+
+        function ValidateFormData() {
+            var isValid = true;
+            $('section.content-block:visible').find('input.requiredField, select.requiredField').each(function () {
+                var type = $(this).prop("type");
+                if (type === "number" && $(this).val() <= 0) {
+                    isValid = false;
+                    $(this).addClass('input-validation-error');
+                }
+                else if ($(this).val() === "" || $(this).val() === null) {
+                    isValid = false;
+                    $(this).addClass('input-validation-error');
+                }
+                else {
+                    $(this).removeClass('input-validation-error');
+                }
+            });
+            return isValid;
+        }
+
+
+        function OnSaveSuccess() {
+            window.location.href = "@Url.Action("student", "student")";
+        }
+
+        function OnCancel() {
+            window.location.href = "@Url.Action("student", "student")";
+        }
+    </script>
+}
+

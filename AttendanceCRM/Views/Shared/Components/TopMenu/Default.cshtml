@@ -1,0 +1,74 @@
+﻿@using AttendanceCRM.Models
+@model TopMenuViewModel
+@{
+    var username = User.Claims.First(x => x.Type == "ShortName").Value;
+    var role = User.Claims.First(x => x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
+}
+<!-- TOP Start Header -->
+<header class="header">
+    <div class="row no-gutters">
+        <div class="col-md-auto" style="width:50%">
+            <button class="nav-icon" data-intro='Menu icon'>
+                <span class="one"></span>
+                <span class="two"></span>
+                <span class="three"></span>
+            </button>
+            <a href="@Url.Action("dashboard", "home")" title="Smart CheckIN" class="logo">
+                Smart CheckIN
+            </a>
+        </div>
+        <div id="div-header-right-bar" class="col-md" style="width:50%">
+            <ul class="header-right-bar">
+                <li class="user-block dropdown" style="float:right;">
+                    <a class="dropdown-toggle logo btn btn-secondary" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-expanded="false" data-intro='User profile' data-position='bottom-right-aligned'>
+                        @username
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                        <span class="arrow"></span>
+                        <div class="inner-block">
+                            <a href="@Url.Action("changepassword", "account")" class="dropdown-item" href="#"> <img src="~/images/change-password.svg" alt=""> Change Password</a>
+                            <a href="@Url.Action("logout", "account")" type="button" class="btn btn-secondary w-100 mt-3">Logout</a>
+                        </div>
+                    </div>
+                </li>
+                @if (Model.IsShowNotification)
+                {
+                    <li class="notification dropdown">
+                        <a class="dropdown-icon dropdown-toggle" href="#" role="button" id="notification" data-toggle="dropdown" aria-expanded="false" data-intro='Notification'>
+                            <em>@Model.Notification.Count</em>
+                            <img src="~/images/notification.svg" alt="">
+                        </a>
+                        @if (Model.Notification.Count > 0)
+                        {
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notification">
+                                <span class="arrow"></span>
+                                <div class="inner-block" style="overflow-y: auto;    max-height: 488px;">
+                                    <div class="dropdown-menu-header">
+                                        <h3>Notification</h3>
+                                        <a href="@Url.Action("notification", "notification")" title="View All" class="view-all-btn">View All</a>
+                                    </div>
+                                    <div class="dropdown-menu-body">
+                                        <ul class="list-unstyled">
+                                            @foreach (var item in Model.Notification)
+                                            {
+                                                <li class="media unread">
+                                                    <img class="mr-3" src="~/images/cust-online.svg" alt="Cust Online Message">
+                                                    <div class="media-body">
+                                                        <p>@item.Message</p>
+                                                        <span class="date-and-time text-secondary">@item.AddedOn?.ToString("dd/MM/yyyy")</span>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</header>
+<!-- End Header -->

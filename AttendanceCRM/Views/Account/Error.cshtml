@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Error";
+    Layout = ViewBag.UserId > 0 ? "~/Views/Shared/_Layout.cshtml" : null;
+}
+<style>
+    .container {
+        text-align: center;
+        margin: auto;
+        padding: 4em;
+    }
+
+    .container img {
+        width: 256px;
+        height: 225px;
+    }
+
+    .container h1 {
+        margin-top: 1rem;
+        font-size: 35px;
+        text-align: center;
+    }
+
+    .container p {  
+        margin-top: 1rem;
+    }
+</style>
+<div class="container">
+    <img src="@Url.Content("~/Images/error.png")" />
+    <h1>
+        Something went wrong!
+    </h1>
+    <p>Please try again later.</p>
+</div>

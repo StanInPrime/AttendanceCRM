@@ -1,0 +1,90 @@
+﻿@model AttendanceCRM.Models.CheckInViewModel
+@{
+    ViewData["Title"] = "Check In";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-5">
+                <div class="card-body p-4 p-sm-5">
+                    <h5 class="card-title text-center mb-3 fw-light fs-5"><b class="fe-600">Check In</b></h5>
+                    <div class="row">
+                        <div>
+                            <img style="width:100%;height:auto;" src="~/images/lighthouse.svg" />
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-floating mb-3">
+                                @Html.TextBox("CheckinCode", "", new { @class = "form-control", autocomplete = "off", placeholder = "Checkin Code", maxLength = "20" })
+                                <label for="Username">Checkin Code</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="d-grid">
+                                <button class="btn btn-primary btn-login text-uppercase fw-bold" onclick="SaveAttenadance()">
+                                    CHECKIN
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if(Model.RecentAttendance.Count > 0)
+        {
+            <div class="col-md-6 mx-auto">
+                <div class="card border-0 shadow rounded-3 my-5">
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="card-title text-center mb-3 fw-light fs-5"><b class="fe-600">Recent Attendance</b></h5>
+                        @foreach(var data in Model.RecentAttendance)
+                        {
+                            <div class="row" style="padding: 10px 0px;">
+                                <h5 style="padding: 0 0 10px;" class="fw-light fs-5">
+                                    <b style="color: #a9a095;font-weight: 500;">@String.Format("{0:ddd, dd MMM yyyy}", data.AttendanceDate)</b>
+                                </h5>
+                                @foreach(var course in data.CourseName)
+                                {
+                                    <div style="padding: 4px 0px;font-size: 17px !important;">
+                                        @course
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    function SaveAttenadance() {
+        if ($("#CheckinCode").val() != "" && $("#CheckinCode").val() != null && $("#CheckinCode").val() != undefined) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("saveattenadance", "checkin")",
+                data: { "data": $("#CheckinCode").val() },
+                cache: false,
+                dataType: 'json',
+                success: function (data, textStatus, XMLHttpRequest) {
+                    $("#CheckinCode").val("");
+                    if (data.success) {
+                        successMessage(data.message);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2500);
+                    }
+                    else {
+                        errorMessage(data.message);
+                    }
+                },
+                error: function (jqXHR, exception, errMsg) {
+                    errorMessage("Something went wrong.");
+                }
+            });
+        }
+        else{
+            errorMessage("Please enter valid checkin code.");
+        }
+    }
+</script>

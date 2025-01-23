@@ -1,0 +1,77 @@
+﻿@model AttendanceCRM.Models.Custom.LoginModel
+@{
+    ViewBag.Title = "Sign In - Smart CheckIn";
+    Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="@Url.Content("~/Images/favicon.png")" />
+    <link href="~/css/main-bundle.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script src="~/js/main-bundle.min.js"></script>
+    <style>
+        body {
+            background: #8ec5fc;
+            background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card border-0 shadow rounded-3 my-5">
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="card-title text-center mb-5 card-title-bold-text"><b>Smart CheckIN</b></h5>
+                        @using (Html.BeginForm("login", "account", FormMethod.Post, new { id = "frmLogin" }))
+                        {
+                            @Html.HiddenFor(x => x.ReturnUrl)
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(x => x.Username, new { @class = "form-control", autocomplete = "off", placeholder = "Username" })
+                                <label for="Username">Username</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                @Html.TextBoxFor(x => x.Password, new { @class = "form-control", type = "password", autocomplete = "off", placeholder = "Password" })
+                                <label for="Password">Password</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <div class="icheck-label">
+                                    @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input icheck", type="checkbox" })
+                                    <label class="form-check-label" for="RememberMe">
+                                        Remember Me
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-grid">
+                                <button class="btn btn-primary btn-login text-uppercase fw-bold" type="submit">
+                                    Sign in
+                                </button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            InitiCheck();
+            var error = '@(TempData["ErrorMessage"])';
+            if (error !== null && error !== "") {
+                errorMessage(error);
+            }
+            var returnUrl = getQueryStringByName("returnUrl") + window.location.hash;
+            if (returnUrl !== null && returnUrl !== 'null' && returnUrl !== '') {
+                $('#ReturnUrl').val(returnUrl);
+            }
+        });
+    </script>
+</body>
+</html>

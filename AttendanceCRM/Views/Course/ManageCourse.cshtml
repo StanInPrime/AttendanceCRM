@@ -1,0 +1,137 @@
+﻿@using AttendanceCRM.Models
+@model CourseViewModel
+@{
+    ViewData["Title"] = "Courses";
+}
+<div class="content-header">
+    <h1>Manage Course</h1>
+</div>
+
+<section class="content-block">
+    @using (Html.BeginForm("managecourse", "course", FormMethod.Post, new { id = "frmCourse", @class = "default-form", autocomplete = "off" }))
+    {
+        @Html.HiddenFor(x => x.Course.Id)
+        @Html.HiddenFor(x => x.Course.CreatedDate)
+        @Html.HiddenFor(x => x.Course.CreatedBy)
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Course.Name)
+                    @Html.TextBoxFor(m => m.Course.Name, new { @class = "form-control requiredField", maxLength = "100", autocomplete = "off" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Course.CourseYearId)
+                    @Html.DropDownListFor(m => m.Course.CourseYearId, Model.CourseYearList, new { @class = "selectpicker form-control requiredField", data_live_search = "true", data_live_search_placeholder = "Search", @id = "ddlCourseYear" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Course.CourseSemesterId)
+                    @Html.DropDownListFor(m => m.Course.CourseSemesterId, Model.CourseSemesterList, new { @class = "selectpicker form-control requiredField", data_live_search = "true", data_live_search_placeholder = "Search", @id = "ddlCourseSemester" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Course.CourseSubjectId)
+                    @Html.DropDownListFor(m => m.Course.CourseSubjectId, Model.CourseSubjectList, new { @class = "selectpicker form-control requiredField", data_live_search = "true", data_live_search_placeholder = "Search", @id = "ddlCourseSubject" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Course.TeacherId)
+                    @Html.DropDownListFor(m => m.Course.TeacherId, Model.CourseTeacherList, new { @class = "selectpicker form-control requiredField", data_live_search = "true", data_live_search_placeholder = "Search", @id = "ddlCourseTeacher" })
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-sm-12">
+                <div class="form-group CourseStudentListBoxFor">
+                    @Html.LabelFor(x => x.Course.SelectedStudents)
+                    <div>
+                        @Html.ListBoxFor(m => m.Course.SelectedStudents, Model.CourseStudentList, new { @class = "select2-emailstatus form-control", id = "ddlCourseStudent", @multiple = "multiple" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="form-group">
+                    <label class="icheck-label">
+                        @Html.CheckBox("Course.Active", Model.Course.Active.HasValue ? Model.Course.Active.Value : false, new { @class = "icheck" })
+                        <span for="Active">@Html.Raw("Active")</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="SaveFormData()">Save</button>
+        <button type="button" class="btn btn-secondary" onclick="OnCancel()">Cancel</button>
+    }
+</section>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            InitiCheck();
+            $('#frmCourse').on('keypress', function (e) {
+                if (e.keyCode === 13) {
+                    e.preventDefault();
+                    return SavePageData(this, 'frmCourse', OnSaveSuccess);
+                }
+            });
+            $('#ddlCourseStudent').select2({
+                theme: 'bootstrap4'
+            });
+        });
+
+        function SaveFormData() {
+            if (ValidateFormData()) {
+                return SavePageData(this, 'frmCourse', OnSaveSuccess);
+            }
+        }
+
+        function ValidateFormData() {
+            var isValid = true;
+            $('section.content-block:visible').find('input.requiredField, select.requiredField').each(function () {
+                var type = $(this).prop("type");
+                if (type === "number" && $(this).val() <= 0) {
+                    isValid = false;
+                    $(this).addClass('input-validation-error');
+                }
+                else if ($(this).val() === "" || $(this).val() === null) {
+                    isValid = false;
+                    $(this).addClass('input-validation-error');
+                }
+                else {
+                    $(this).removeClass('input-validation-error');
+                }
+            });
+            var courseStudents = $("#ddlCourseStudent").val();
+            if (courseStudents == null || courseStudents.length == 0) {
+                isValid = false;
+                $(".CourseStudentListBoxFor .select2.select2-container").addClass('input-validation-error');
+            }
+            else {
+                $(".CourseStudentListBoxFor .select2.select2-container").removeClass('input-validation-error');
+
+            }
+            return isValid;
+        }
+
+        function OnSaveSuccess() {
+            window.location.href = "@Url.Action("course", "course")";
+        }
+
+        function OnCancel() {
+            window.location.href = "@Url.Action("course", "course")";
+        }
+    </script>
+}
+

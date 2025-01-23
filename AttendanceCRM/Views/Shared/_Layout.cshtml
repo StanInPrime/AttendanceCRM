@@ -1,0 +1,142 @@
+﻿@using AttendanceCRM.Models
+@{
+    Layout = null;
+    var username = User.Claims.First(x => x.Type == "ShortName").Value;
+    var role = User.Claims.First(x => x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
+}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>@ViewData["Title"] - Smart CheckIN</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="@Url.Content("~/Images/favicon.png")" />
+    <link href="~/css/main-bundle.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script src="~/js/main-bundle.min.js"></script>
+</head>
+<body>
+    <div id="preloader">
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <!-- TOP Start Header -->
+        @await Component.InvokeAsync(nameof(TopMenu))
+        <!-- End Header -->
+        <!--LEFT Main Navigation -->
+        <nav class="main-navigation">
+            <ul>
+                <li>
+                    <a id="lnkDashboard" href="@Url.Action("dashboard", "home")" title="Dashboard"><img class="icon" src="~/images/dashboard.svg" alt="Dashboard">Dashboard</a>
+                </li>
+                @if (role != "Student")
+                {
+                    <li>
+                        <a id="lnkTeachers" href="@Url.Action("teacher", "teacher")" title="Teachers"><img class="icon" src="~/images/dashboard.svg" alt="Teachers">Teachers</a>
+                    </li>
+                }
+                @if (role != "Student")
+                {
+                    <li>
+                        <a id="lnkStudent" href="@Url.Action("student", "student")" title="Students"><img class="icon" src="~/images/dashboard.svg" alt="Teachers">Students</a>
+                    </li>
+                }
+                @if (role == "Student")
+                {
+                    <li>
+                        <a id="lnkCourses" href="@Url.Action("course", "course")" title="My Courses"><img class="icon" src="~/images/dashboard.svg" alt="My Courses">My Courses</a>
+                    </li>
+                }
+                @if (role == "Student")
+                {
+                    <li>
+                        <a id="lnkCheckIn" href="@Url.Action("checkin", "checkin")" title="Check In"><img class="icon" src="~/images/dashboard.svg" alt="Check In">Check In</a>
+                    </li>
+                }
+                @if (role != "Student")
+                {
+                    <li>
+                        <a id="lnkCourses" href="@Url.Action("course", "course")" title="Courses"><img class="icon" src="~/images/dashboard.svg" alt="Courses">Courses</a>
+                    </li>
+                }
+                @if (role != "Student")
+                {
+                    <li>
+                        <a id="lnkAttendance" href="@Url.Action("attendance", "attendance")" title="Attendance"><img class="icon" src="~/images/dashboard.svg" alt="Attendance">Attendance</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <!-- End Main Navigation -->
+        <div class="menu-overlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            @RenderBody()
+        </main>
+        <!-- End Main Content -->
+    </div>
+    <!-- Start Footer -->
+    <footer class="footer">
+        <p class="copyright">Copyright &copy; @DateTime.Now.Year.ToString() Smart CheckIN. All Rights Reserved.</p>
+    </footer>
+    <!-- End Footer -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            InitiCheck();
+            InitSelectPicker();
+            var url = window.location.href;
+            if (url.includes("dashboard")) {
+                setActiveLink($('#lnkDashboard').attr('href'));
+            }
+            if (url.includes("changepassword")) {
+
+            }
+
+            if (url.includes("teacher") || url.includes("manageteacher")) {
+                setActiveLink($('#lnkTeachers').attr('href'));
+            }
+            if (url.includes("checkin")) {
+                setActiveLink($('#lnkCheckIn').attr('href'));
+            }
+
+            if (url.includes("student") || url.includes("managestudent")) {
+                setActiveLink($('#lnkStudent').attr('href'));
+            }
+            if (url.includes("course") || url.includes("managecourse")) {
+                setActiveLink($('#lnkCourses').attr('href'));
+            }
+            if (url.includes("attendance") || url.includes("manageattendance")) {
+                setActiveLink($('#lnkAttendance').attr('href'));
+            }
+
+            var success = '@(TempData["SuccessMessage"])';
+            if (success != null && success != "") {
+                successMessage(success);
+            }
+            var error = '@(TempData["ErrorMessage"])';
+            if (error != null && error != "") {
+                errorMessage(error);
+            }
+        });
+
+        function setActiveLink(url) {
+            $('.main-navigation').find('li').removeClass('active').removeClass('open');
+            $('.main-navigation').find("a[href='" + url + "']").parent('li').addClass("active");
+
+            $('.main-navigation').find("a[href='" + url + "']").parent('li').closest('.submenu-top').addClass("active open");
+            $('.main-navigation').find('.open').children('ul').show();
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
