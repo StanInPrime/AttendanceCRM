@@ -1,4 +1,4 @@
-Deployed on Azure with Azure App Service, SQL Database, and SQL Server
+Azure App Service, SQL Database, and SQL Server were used in its deployment.
 
 URL; https://attendanceappservice.azurewebsites.net/
 
