@@ -85,14 +85,14 @@ Cloud Deployment:
 
 ![image](https://github.com/user-attachments/assets/9257e1e2-0eea-40d3-8d16-27cff434bf78)
 
-## JUnit testing
+## NUnit testing
 
 ![image](https://github.com/user-attachments/assets/3bd895cb-877f-4a79-a934-fb75a3cef5bb)
 
 ## Azure Monitoring
 ![image](https://github.com/user-attachments/assets/07c9d948-250f-4ae3-b20f-581593d5bd99)
 
-## Azure CloudWatch Monitoring
+## AWS CloudWatch Monitoring
 ![image](https://github.com/user-attachments/assets/5192c45e-2783-4657-99c9-3cb8611a0d76)
 
 ## User/Usability Testing 
