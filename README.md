@@ -39,6 +39,25 @@ Testing
 - Regression testing
 - JUnit
 - JMeter
+
+
+# Key Features: 
+User Roles
+- Admin: Full access to manage users, courses, and settings.
+- Teacher: Ability to create courses, manage student attendance, and generate reports.
+- Student: Can check in to their classes and view attendance history.
+
+Attendance Management:
+- Teachers can mark attendance manually.
+- Students can perform self-check-ins to mark their presence in class.
+
+Reporting:
+- Generates detailed attendance reports, including historical data for teachers, students, and admins.
+
+Cloud Deployment:
+- Hosted on Microsoft Azure and AWS infrastructure for scalability, reliability, and easy management.
+
+
  
 
 # Project Development
@@ -78,6 +97,36 @@ Testing
 
 ## User/Usability Testing 
 ![image](https://github.com/user-attachments/assets/c35ce125-68f1-4b51-9c0e-acd9b7b5c522)
+
+
+# Project Summary
+The project successfully developed an attendance tracking web application, "Smart Check-In", that addresses the need for a streamlined and efficient system to manage student attendance in educational institutions. The application was designed and implemented using an incremental approach, allowing for gradual feature additions and addressing user feedback throughout the development process.
+Through the work done in this project, several key findings and contributions can be highlighted:
+
+- Comprehensive User Functionality: The application provides a well-defined set of user roles (admin, teacher, and student). 
+- Versatile Cloud Deployment: The project explored the deployment of the attendance tracking system on two leading cloud platforms, AWS and Microsoft Azure.
+- Robust Testing and Evaluation: The project employed a rigorous testing strategy.
+
+# Evaluation of the Project Plan and Final Product
+- Agile methodology: A significant lesson was the efficacy of breaking down the objectives into smaller needs and logically arranging them throughout the increments. Utilising Trello facilitated the monitoring of backlogs and the identification of specific requirements to be implemented in each incremental phase.
+![image](https://github.com/user-attachments/assets/12f3c7c6-db2e-4eff-9f39-220c832dfc67)
+
+- Azure App Service: was used to host the Smart Check-In web application. It provides automatic scaling, high availability, and built-in security features.
+
+- Azure SQL Database: was used to migrate the local database from **SQL Server Management Studio** to a fully-managed relational database service built for the cloud. Handled all the data management for courses, user accounts, attendance logs, and reports.
+
+- Azure Monitoring: was used to keep track of application performance and usage metrics.
+
+- JMeter: was used to simulate multiple users interacting with the application simultaneously to test the system's performance and response time under load.
+
+- NUnit: was used to write and run unit tests for the application's business logic, ensuring individual components like attendance tracking and user authentication functioned correctly.
+
+- Regression testing: was conducted regularly to ensure that new code changes or feature additions did not unintentionally break existing functionality.
+
+# Critical Evaluation / Future Consideration
+
+
+
 
 
 
