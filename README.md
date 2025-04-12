@@ -124,8 +124,9 @@ Through the work done in this project, several key findings and contributions ca
 - Regression testing: was conducted regularly to ensure that new code changes or feature additions did not unintentionally break existing functionality.
 
 # Critical Evaluation / Future Consideration
+As my first cloud-based project, developing the Smart Check-In application on Microsoft Azure (and partially experimenting with AWS for comparison) provided me with a solid understanding of the core concepts of cloud infrastructure, deployment models, and the overall Azure ecosystem. This project not only fulfilled its functional objectives—offering robust features such as user authentication, course management, attendance recording, reporting, and administrative control—but also went through rigorous testing cycles, including NUnit, regression, performance, and usability testing. These ensured that the system met the identified requirements and remained reliable, scalable, and user-friendly.
 
-
+Looking ahead, I am excited to build upon this foundational experience by diving deeper into Azure infrastructure. Although I have not yet fully embraced Infrastructure as Code (IaC) practices in my workflow, it remains a key area for future exploration. As part of my ongoing learning and professional development, I plan to incorporate IaC tools such as Terraform to design and deploy an Azure Landing Zone, and eventually aim to integrate automated pipelines using Azure DevOps. I also foresee implementing automated resource cleanup routines to enhance cost-efficiency and maintain resource hygiene, further deepening my understanding of cloud governance and security.
 
 
 
