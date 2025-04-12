@@ -1,16 +1,90 @@
-Azure App Service, SQL Database, and SQL Server were used in its deployment.
+# Three-Tier Web Application Project:
+Smart Check-In is a web application developed as part of my final year project aimed at streamlining attendance management for educational institutions. This solution modernizes the manual attendance process by providing real-time tracking, detailed reporting, and an intuitive interface for students, teachers, and admins.
 
-URL; https://attendanceappservice.azurewebsites.net/
+Check it out live here!
 
-Smart Check-In is a web application developed as part of my final year project to streamline attendance management for educational institutions. It includes features such as user authentication, course management, attendance tracking, reporting, and administrative tools.
-
-Key Features:
-User Roles: Admin, teacher, and student, each with tailored functionalities.
-Attendance Management: Teacher-led tracking and student self-check-ins.
-Reporting: Detailed attendance history and reports.
-Cloud Deployment: Hosted on Microsoft Azure for scalability and reliability.
-This project was built incrementally following agile principles, focusing on creating a user-friendly and efficient solution to replace traditional manual attendance methods.
+https://attendanceappservice.azurewebsites.net/
 
 
-Technologies used: 
-.NET Framework, ASP.NET MVC, Cascading Style Sheets (CSS), HTML, JavaScript, AJAX, JSON, Visual Studio 2022, SQL Server Management Studio 2019, Azure Student Free account. 
+# **Architecture**
+-- Diagram
+
+
+### Tools
+
+Development Tools
+- Visual Sudio 2022
+- Microsoft SQL Server Management Studio 2019
+
+Front-end
+- HTML, CSS, JavaScript, AJAX, JSON, .NET Framework
+
+Cloud infrastructre
+- Azure
+  - Azure App Service
+  - Azure SQL Database
+  - Azure SQL Server
+  - Azure Monitoring 
+    - Application insights
+- AWS (no longer live)
+  - AWS Elastic Beanstalk
+  - Amazon Relational Database Service (RDS)
+  - AWS Cloud Watch
+
+ Project Management / Development Methodology
+ - Agile (3 sprints)
+ - Trello Boards
+
+Testing
+- Regression testing
+- JUnit
+- JMeter
+ 
+
+# Project Development
+## Development of the project in Visual Studio
+![image](https://github.com/user-attachments/assets/7779000a-c681-4244-9895-13ee31e841f1)
+
+## Database Class Diagram
+![image](https://github.com/user-attachments/assets/68c9d85f-ccd9-4dd7-a51b-908a95c9f7b7)
+
+## Working Application
+![image](https://github.com/user-attachments/assets/ad411a31-212b-4a85-b859-e1fcd53c864f)
+
+(AWS on mobile device)
+
+![image](https://github.com/user-attachments/assets/a26e1172-8ddc-4fb6-9fa5-c761a227e9da)
+
+(Web app responsiveness on iPad Azure deployment)
+
+![image](https://github.com/user-attachments/assets/2b0cdb14-939d-42b1-8f8d-c18ae75ab858)
+
+![image](https://github.com/user-attachments/assets/3bb16994-b982-47b8-8742-917697cf956f)
+
+
+## JMeter testing
+
+![image](https://github.com/user-attachments/assets/9257e1e2-0eea-40d3-8d16-27cff434bf78)
+
+## JUnit testing
+
+![image](https://github.com/user-attachments/assets/3bd895cb-877f-4a79-a934-fb75a3cef5bb)
+
+## Azure Monitoring
+![image](https://github.com/user-attachments/assets/07c9d948-250f-4ae3-b20f-581593d5bd99)
+
+## Azure CloudWatch Monitoring
+![image](https://github.com/user-attachments/assets/5192c45e-2783-4657-99c9-3cb8611a0d76)
+
+## User/Usability Testing 
+![image](https://github.com/user-attachments/assets/c35ce125-68f1-4b51-9c0e-acd9b7b5c522)
+
+
+
+
+
+
+
+
+
+
