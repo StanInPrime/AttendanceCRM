@@ -38,7 +38,7 @@ Cloud infrastructre
 
 Testing
 - Regression testing
-- JUnit
+- NUnit
 - JMeter
 
 
@@ -98,6 +98,11 @@ Cloud Deployment:
 
 ## User/Usability Testing 
 ![image](https://github.com/user-attachments/assets/c35ce125-68f1-4b51-9c0e-acd9b7b5c522)
+
+## Azure resources
+
+![image](https://github.com/user-attachments/assets/dbc89251-7e42-40e8-9b46-22834d0d7cda)
+
 
 
 # Project Summary
