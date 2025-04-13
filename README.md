@@ -7,7 +7,8 @@ https://attendanceappservice.azurewebsites.net/
 
 
 # **Architecture**
--- Diagram
+
+![Untitled diagram-2025-04-13-002520](https://github.com/user-attachments/assets/4b5cddc5-de55-4ac1-bade-0f3bc8ecece6)
 
 
 ### Tools
